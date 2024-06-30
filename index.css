@@ -159,6 +159,10 @@ ul li:hover {
     animation: spinAway 1s ease-in-out;
 }
 
+.spinfast {
+    animation: spinAway 0.5s ease-in-out;
+}
+
 /*Pop for input validation*/
 #popup {
     position: absolute;

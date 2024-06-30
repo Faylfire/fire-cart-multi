@@ -153,10 +153,10 @@ function wobbleIcon() {
 //Add a spin animation to the logo on submit
 function spinIcon() {
     const icon = document.getElementById('listLogo');
-    icon.classList.add('spinning');
+    icon.classList.add('spinfast');
     
     setTimeout(() => {
-        icon.classList.remove('spinning');
+        icon.classList.remove('spinfast');
     }, 500);// Hide after 3000ms or 3 seconds
 }
 
