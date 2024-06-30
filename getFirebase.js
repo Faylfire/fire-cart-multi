@@ -8,7 +8,7 @@ import validateInput from './tools.js';
 //const new_date = new Date("2024-08-24");
 //let expiration = new_date.getTime() //1724457600000
 
-const VITE_FIREBASE_URL='https://realtime-database-6334c-default-rtdb.firebaseio.com/'
+//const VITE_FIREBASE_URL=""
 
 
 export default function getFirebase(username, password){
@@ -16,7 +16,7 @@ export default function getFirebase(username, password){
     const firebaseConfig = {
         //apiKey: "YOUR_API_KEY",
         //authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: VITE_FIREBASE_URL,
+        databaseURL: import.meta.env.VITE_FIREBASE_URL,,
         //projectId: "realtime-database",
         //storageBucket: "YOUR_PROJECT_ID.appspot.com",
         //messagingSenderId: "YOUR_SENDER_ID",
@@ -35,7 +35,7 @@ export default function getFirebase(username, password){
 
     if (username !== null && password !== null){
         console.log("in if statement")
-        user = user + "/" + username + "/" + password
+        user = user + "/" + username + "/" + passwordw
         shoppingListInDB = ref(database, user)
     }
     const shoppingListEl = document.getElementById("shopping-list")
