@@ -16,29 +16,33 @@ export default function getFirebase(username, password){
     const firebaseConfig = {
         //apiKey: "YOUR_API_KEY",
         //authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: import.meta.env.VITE_FIREBASE_URL,,
+        databaseURL: import.meta.env.VITE_FIREBASE_URL,
         //projectId: "realtime-database",
         //storageBucket: "YOUR_PROJECT_ID.appspot.com",
         //messagingSenderId: "YOUR_SENDER_ID",
         //appId: "YOUR_APP_ID"
     };
 
+
+    //Initialized Firebase connection and set the default database reference
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app)
     let user = "shopList"
     let shoppingListInDB = ref(database, user)
 
+    //Set up variables for HTML Element selectors 
     const inputFieldEl = document.getElementById("input-field")
     const addButtonEl = document.getElementById("add-button")
-    console.log('in getFirebase')
-    console.log(username, password)
+    const shoppingListEl = document.getElementById("shopping-list")
 
+    //Simple login, any login is valid except null
+    // Also sets the database to the user login credentials
     if (username !== null && password !== null){
-        console.log("in if statement")
+
         user = user + "/" + username + "/" + passwordw
         shoppingListInDB = ref(database, user)
     }
-    const shoppingListEl = document.getElementById("shopping-list")
+    
 
     function handleAddItem(inputValue){
 
@@ -116,8 +120,6 @@ export default function getFirebase(username, password){
                 handleListItemClick(newEl.id)
             }
         })
-    
-        // Challenge: Attach an event listener to newEl and make it so you console log the id of the item when it's pressed.
         
         shoppingListEl.append(newEl)
     }
@@ -134,10 +136,11 @@ export default function getFirebase(username, password){
     }
 }
 
+//Add a Wobble animation to the logo on sumbit
 function addItemWobble() {
     const logo = document.getElementById('listLogo');
     
-    // Add the wobble class
+    // Add the wobble class to the logo
     logo.classList.add('wobble');
     
     // Remove the class after the animation completes
@@ -146,6 +149,7 @@ function addItemWobble() {
     }, 500); // 1000ms = 1 second
 }
 
+//Show then hide popup after some time 3 second default
 function showPopup(message) {
     const popup = document.getElementById('popup');
     const popupMessage = document.getElementById('popupMessage');
@@ -155,5 +159,5 @@ function showPopup(message) {
 
     setTimeout(() => {
         popup.classList.remove('show');
-    }, 3000); // Hide after 3 seconds
+    }, 3000); // Hide after 3000ms or 3 seconds
 }
