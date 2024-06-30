@@ -16,7 +16,8 @@ export default function getFirebase(username, password){
     const firebaseConfig = {
         //apiKey: "YOUR_API_KEY",
         //authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: import.meta.env.VITE_FIREBASE_URL,
+        //databaseURL: import.meta.env.VITE_FIREBASE_URL,
+        databaseURL: 'https://realtime-database-6334c-default-rtdb.firebaseio.com/'
         //projectId: "realtime-database",
         //storageBucket: "YOUR_PROJECT_ID.appspot.com",
         //messagingSenderId: "YOUR_SENDER_ID",
@@ -39,7 +40,7 @@ export default function getFirebase(username, password){
     // Also sets the database to the user login credentials
     if (username !== null && password !== null){
 
-        user = user + "/" + username + "/" + passwordw
+        user = user + "/" + username + "/" + password
         shoppingListInDB = ref(database, user)
     }
     
@@ -49,10 +50,12 @@ export default function getFirebase(username, password){
         const inputValid = validateInput(inputValue)
 
         if (inputValid.isValid){
+            spinIcon()
             push(shoppingListInDB, inputValue)
             // appendItemToShoppingListEl(inputValue)
             clearInputFieldEl()
         } else {
+            wobbleIcon()
             showPopup(inputValid.message)
         }
         inputFieldEl.focus()
@@ -71,8 +74,6 @@ export default function getFirebase(username, password){
         e.preventDefault();
         let inputValue = inputFieldEl.value
         //Add the item to the shopping list
-        console.log('addwobble')
-        addItemWobble()
         handleAddItem(inputValue)
 
     })
@@ -137,7 +138,7 @@ export default function getFirebase(username, password){
 }
 
 //Add a Wobble animation to the logo on sumbit
-function addItemWobble() {
+function wobbleIcon() {
     const logo = document.getElementById('listLogo');
     
     // Add the wobble class to the logo
@@ -147,6 +148,16 @@ function addItemWobble() {
     setTimeout(() => {
       logo.classList.remove('wobble');
     }, 500); // 1000ms = 1 second
+}
+
+//Add a spin animation to the logo on submit
+function spinIcon() {
+    const icon = document.getElementById('listLogo');
+    icon.classList.add('spinning');
+    
+    setTimeout(() => {
+        icon.classList.remove('spinning');
+    }, 500);// Hide after 3000ms or 3 seconds
 }
 
 //Show then hide popup after some time 3 second default

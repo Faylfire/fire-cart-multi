@@ -139,6 +139,27 @@ ul li:hover {
     animation: wobble 0.5s ease;
 }
 
+/*Adding spinning to the icon*/
+@keyframes spinAway {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(180deg) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+}
+
+.spinning {
+    animation: spinAway 1s ease-in-out;
+}
+
+/*Pop for input validation*/
 #popup {
     position: absolute;
     top: 225px;

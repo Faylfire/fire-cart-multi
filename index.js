@@ -2,7 +2,7 @@ import getFirebase from './getFirebase.js';
 import validateInput from './tools.js';
 
 
-//List Display HTML 'Component'
+//HTML 'Component' for displaying List of shopping items
 const newDiv = document.createElement('div');
 newDiv.id = 'list-container';
 newDiv.className = 'container';
@@ -51,22 +51,25 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     // Simple authentication (replace with server-side authentication in real applications)
     if (userValid.isValid && passValid.isValid) {
         document.getElementById('message').textContent = 'Login successful!';
+        document.getElementById('message').style.fontWeight = 'bold';
         document.getElementById('message').style.color = 'green';
         
         if (saveLogin) {
             localStorage.setItem('fireCartAuth', JSON.stringify({'username':username, 'password':password}));
         }
-        wobbleLogo()
+        spinLogo()
         // Hide login container and show welcome container
         setTimeout(function() {
             onSuccessfulLogin(username, password)
-        }, 1500); // Show welcome message after 1.5 seconds
+        }, 1000); // Show welcome message after 1 seconds
     } else {
         document.getElementById('message').textContent = 'Invalid username or password.';
+        document.getElementById('message').style.fontWeight = 'bold';
         document.getElementById('message').style.color = 'red';
     }
 });
 
+//A wobble function
 function wobbleLogo() {
     const logo = document.getElementById('logo');
     
@@ -79,8 +82,15 @@ function wobbleLogo() {
     }, 1000); // 1000ms = 1 second
 }
 
-
-
+//Add a spin animation to the logo on submit
+function spinLogo() {
+    const icon = document.getElementById('logo');
+    icon.classList.add('spinning');
+    
+    setTimeout(() => {
+        icon.classList.remove('spinning');
+    }, 1000);// Hide after 3000ms or 3 seconds
+}
 
 //This adds a listener to the logout button (when there is one)
 function addLogout() {
