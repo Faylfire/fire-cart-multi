@@ -2,6 +2,16 @@
 
 A Simple Shopping List App Enhanced with Simple Login / Sign Up features
 
+- Remembers your login credentials writtn to localstorage
+
+
+Additional Features
+- Save User Credentials more securely using hashed passwords
+- Check if Username is already taken
+- Add a logout option if the credentials are saved
+- Add option to change to traditional up down list format for items (user requested)
+
+
 Written in Vanilla Javascript, HTML and CSS leveraging Firebase for the Realtime Data Store
 
 Quick start:

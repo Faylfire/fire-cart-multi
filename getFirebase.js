@@ -126,6 +126,7 @@ export default function getFirebase(username, password){
     }
 
     function handleListItemClick(id){
+        wobbleIcon()
         let exactLocationOfItemInDB = ref(database, `${user}/${id}`)
         remove(exactLocationOfItemInDB)
     }
