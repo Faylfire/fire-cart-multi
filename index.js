@@ -6,7 +6,7 @@ import validateInput from './tools.js';
 const newDiv = document.createElement('div');
 newDiv.id = 'list-container';
 newDiv.className = 'container';
-const itemsListHTML = `<img id='listLogo' src="assets/astro.png" alt="Logo: Cute Astronaut with Glasses with Space and Blue Planet as Backdrop">
+const itemsListHTML = `<img id='listLogo' draggable="false" src="assets/astro.png" alt="Logo: Cute Astronaut with Glasses with Space and Blue Planet as Backdrop">
                                 <input type="text" maxlength='72' id="input-field" placeholder="Add an item...">
                                 <button id="add-button">Add to list</button>
                                 <ul id="shopping-list">
