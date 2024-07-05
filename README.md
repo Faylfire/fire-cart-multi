@@ -1,4 +1,4 @@
-# Fire Cart Multi
+# Listfire
 
 A Simple Shopping List App Enhanced with Simple Login / Sign Up features
 
@@ -9,7 +9,10 @@ Additional Features
 - Save User Credentials more securely using hashed passwords
 - Check if Username is already taken
 - Add a logout option if the credentials are saved
-- Add option to change to traditional up down list format for items (user requested)
+
+
+Added Features:
+- 7/5/2024 Added option to change to traditional up down list format for items (user requested) by clicking on the logo
 
 
 Written in Vanilla Javascript, HTML and CSS leveraging Firebase for the Realtime Data Store

@@ -35,6 +35,7 @@ export default function getFirebase(username, password){
     const inputFieldEl = document.getElementById("input-field")
     const addButtonEl = document.getElementById("add-button")
     const shoppingListEl = document.getElementById("shopping-list")
+    const logo = document.getElementById('listLogo');
 
     //Simple login, any login is valid except null
     // Also sets the database to the user login credentials
@@ -60,6 +61,18 @@ export default function getFirebase(username, password){
         }
         inputFieldEl.focus()
     }
+
+    logo.addEventListener("click", function(e) {
+        e.preventDefault();
+        spinIcon()
+        shoppingListEl.classList.toggle("list")
+        const specificChildren = shoppingListEl.children; // Selects all children
+        console.log(specificChildren.length)
+        for (let child of specificChildren) {
+            child.classList.toggle("li-listmode-width")
+        }
+
+    })
 
     inputFieldEl.addEventListener("keydown",function(e){
         if (e.key === 'Enter' || e.keyCode === 13) {

@@ -122,6 +122,23 @@ ul li:hover {
     background-color: #e0e0e0; /* Slightly darker background on hover */
 }
 
+/*Unwrapped straight down list format for toggling*/
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.li-listmode-width{
+    width: 60%
+}
+  
+
+#listLogo {
+    cursor: pointer;
+}
+
 
 /*Adding wobble to the icon on successful login*/
 @keyframes wobble {
