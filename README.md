@@ -1,21 +1,29 @@
 # Listfire
 
-A Simple Shopping List App Enhanced with Simple Login / Sign Up features
+Hosted at https://listfire.netlify.app
 
-- Remembers your login credentials writtn to localstorage
+A Simple Shopping List App Enhanced with Simple Login / Sign Up features 
 
+Written in Vanilla Javascript, HTML and CSS leveraging Firebase for the Realtime Data Store
 
-Additional Features
+This application was created in conjunction with a Scrimba (see info below) course on progressive web and mobile applications.
+
+## Additional Features
 - Save User Credentials more securely using hashed passwords
 - Check if Username is already taken
 - Add a logout option if the credentials are saved
+- Make single touch of list items not delete but instead have an indication that it is completed (green and faded out)
+- Double touch (click) to delete instead of single
 
-
-Added Features:
+### Completed Features:
+- 7/1/2024 Remembers your login credentials written to localstorage
 - 7/5/2024 Added option to change to traditional up down list format for items (user requested) by clicking on the logo
 
 
-Written in Vanilla Javascript, HTML and CSS leveraging Firebase for the Realtime Data Store
+### Bug Fixes:
+- 7/11/2024 When in straight down list format: deleting a list item breaks the fixed width of the list item: Fixed, item will retain proper width
+
+
 
 Quick start:
 
@@ -25,6 +33,9 @@ $ npm start
 ````
 
 Head over to https://vitejs.dev/ to learn more about using vite
+
+
+
 ## About Scrimba
 
 At Scrimba our goal is to create the best possible coding school at the cost of a gym membership! 💜

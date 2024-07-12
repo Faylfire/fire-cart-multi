@@ -114,11 +114,17 @@ export default function getFirebase(username, password){
 
     function appendItemToShoppingListEl(item) {
         //shoppingListEl.innerHTML += `<li>${itemValue}</li>`
+
+        const hasListClass = shoppingListEl.classList.contains('list');
+
         let itemID = item[0]
         let itemValue = item[1]
         
         let newEl = document.createElement("li")
         newEl.setAttribute("tabindex",0)
+        if (hasListClass) {
+            newEl.classList.add("li-listmode-width")
+        }
         newEl.textContent = itemValue
         newEl.id=itemID
         
