@@ -12,12 +12,13 @@ This application was created in conjunction with a Scrimba (see info below) cour
 - Save User Credentials more securely using hashed passwords
 - Check if Username is already taken
 - Add a logout option if the credentials are saved
-- Make single touch of list items not delete but instead have an indication that it is completed (green and faded out)
-- Double touch (click) to delete instead of single
+
 
 ### Completed Features:
 - 7/1/2024 Remembers your login credentials written to localstorage
 - 7/5/2024 Added option to change to traditional up down list format for items (user requested) by clicking on the logo
+- 7/14/2024 Make single touch of list items not delete but instead have an indication that it is completed (green and faded out)
+- 7/14/2024 Double touch (click) to delete instead of single
 
 
 ### Bug Fixes:

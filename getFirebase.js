@@ -88,7 +88,6 @@ export default function getFirebase(username, password){
         let inputValue = inputFieldEl.value
         //Add the item to the shopping list
         handleAddItem(inputValue)
-
     })
 
 
@@ -99,7 +98,8 @@ export default function getFirebase(username, password){
             [
                 "-O1oAH3IaexJ7Jy8-mYp",
                 {
-                    "item": "$"
+                    "item": "$",
+                    "completed": true
                 }
             ],
             [
@@ -130,7 +130,7 @@ export default function getFirebase(username, password){
     function appendItemToShoppingListEl(item) {
         //shoppingListEl.innerHTML += `<li>${itemValue}</li>`
 
-        //if the display styyle is list style, then make sure the width is fixed for each item
+        //if the display mode is list mode, then make sure the width is fixed for each item
         const hasListClass = shoppingListEl.classList.contains('list');
 
         let itemID = item[0]
@@ -148,47 +148,51 @@ export default function getFirebase(username, password){
         newEl.textContent = itemValue
         newEl.id=itemID
         
-        //Event Listeners for list items single and double click events
+        //Event Listeners for list items single and double click events-----------
         newEl.addEventListener("click", (e)=>{
             e.preventDefault()
-
-            setAsCompleted(e.target)
+            toggleCompleted(e.target)
+            setTimeout(() => inputFieldEl.focus(), 100);
         })
 
         newEl.addEventListener("dblclick", (e)=>{
             e.preventDefault()  
-
-            handleListItemClick(newEl.id)
+            deleteListEl(newEl.id)
+            setTimeout(() => inputFieldEl.focus(), 100);    
         })
 
+        newEl.addEventListener('touchend', () => {
+            setTimeout(() => inputFieldEl.focus(), 100);
+        });
 
-        
         newEl.addEventListener("keydown",function(e){
             //Enter Key has same handling as single click event, Sets Item as completed
-            console.log(e.target)  //  
+            //console.log(e.target)  //  
             if (e.key === 'Enter' || e.keyCode === 13) {
                 e.preventDefault();
-                setAsCompleted(e.target)
+                toggleCompleted(e.target)
             }
 
             //Delete and Backspace has same handling as double click event Deletes item from list
             if (e.key === 'Delete' || e.keyCode === 46 || e.key === 'Backspace' || e.keyCode === 8) {
                 e.preventDefault();
-                handleListItemClick(newEl.id)
+                deleteListEl(newEl.id)
             }
-
+            inputFieldEl.focus()
         })
+        //--------------------------------------------------------------------------
         
         shoppingListEl.append(newEl)
     }
 
-    function handleListItemClick(id){
+    //List item click handlers
+    function deleteListEl(id){
         wobbleIcon()
         const exactLocationOfItemInDB = ref(database, `${user}/${id}`)
         remove(exactLocationOfItemInDB)
     }
 
-    function setAsCompleted(element){
+    function toggleCompleted(element){
         const exactLocationOfItemInDB = ref(database, `${user}/${element.id}`)
         if (element.classList.contains('completed')){
             update(exactLocationOfItemInDB, {'completed': false})
@@ -196,12 +200,10 @@ export default function getFirebase(username, password){
             update(exactLocationOfItemInDB, {'completed': true})
         }
         element.classList.toggle('completed');
-
     }
 
     function clearListEl(){
-
-        //Clear the list items 
+        //Clear the list items
         shoppingListEl.innerHTML = ""
     }
 }
