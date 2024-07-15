@@ -1,5 +1,5 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js'
-import {getDatabase, ref, push, onValue, remove} from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js'
+import {getDatabase, ref, push, onValue, remove, update} from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js'
 import validateInput from './tools.js';
 
 
@@ -52,7 +52,7 @@ export default function getFirebase(username, password){
 
         if (inputValid.isValid){
             spinIcon()
-            push(shoppingListInDB, inputValue)
+            push(shoppingListInDB, {'item': inputValue})
             // appendItemToShoppingListEl(inputValue)
             clearInputFieldEl()
         } else {
@@ -94,13 +94,28 @@ export default function getFirebase(username, password){
 
     onValue(shoppingListInDB, (snapshot)=>{
         
-        //console.log("onvalue called")
+        /*console.log("onvalue called") snapshot.val() sample 
+        [
+            [
+                "-O1oAH3IaexJ7Jy8-mYp",
+                {
+                    "item": "$"
+                }
+            ],
+            [
+                "-O1oAd0yYnx2J5Lm4vHc",
+                {
+                    "item": "Hamburger"
+                }
+            ]
+        ] */
+
         if (snapshot.exists()){
             const items = Object.entries(snapshot.val())
             clearListEl()
             for (let item of items){
                 appendItemToShoppingListEl(item)
-            } 
+            }
         }else {
             shoppingListEl.innerHTML = "No items here yet..."
         }
@@ -115,30 +130,53 @@ export default function getFirebase(username, password){
     function appendItemToShoppingListEl(item) {
         //shoppingListEl.innerHTML += `<li>${itemValue}</li>`
 
+        //if the display styyle is list style, then make sure the width is fixed for each item
         const hasListClass = shoppingListEl.classList.contains('list');
 
         let itemID = item[0]
-        let itemValue = item[1]
+        let itemValue = item[1]['item']
+        let completed = item[1]['completed']
         
         let newEl = document.createElement("li")
         newEl.setAttribute("tabindex",0)
         if (hasListClass) {
             newEl.classList.add("li-listmode-width")
         }
+        if (completed){
+            newEl.classList.add("completed")
+        }
         newEl.textContent = itemValue
         newEl.id=itemID
         
+        //Event Listeners for list items single and double click events
         newEl.addEventListener("click", (e)=>{
             e.preventDefault()
+
+            setAsCompleted(e.target)
+        })
+
+        newEl.addEventListener("dblclick", (e)=>{
+            e.preventDefault()  
 
             handleListItemClick(newEl.id)
         })
 
+
+        
         newEl.addEventListener("keydown",function(e){
+            //Enter Key has same handling as single click event, Sets Item as completed
+            console.log(e.target)  //  
             if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                setAsCompleted(e.target)
+            }
+
+            //Delete and Backspace has same handling as double click event Deletes item from list
+            if (e.key === 'Delete' || e.keyCode === 46 || e.key === 'Backspace' || e.keyCode === 8) {
                 e.preventDefault();
                 handleListItemClick(newEl.id)
             }
+
         })
         
         shoppingListEl.append(newEl)
@@ -146,8 +184,19 @@ export default function getFirebase(username, password){
 
     function handleListItemClick(id){
         wobbleIcon()
-        let exactLocationOfItemInDB = ref(database, `${user}/${id}`)
+        const exactLocationOfItemInDB = ref(database, `${user}/${id}`)
         remove(exactLocationOfItemInDB)
+    }
+
+    function setAsCompleted(element){
+        const exactLocationOfItemInDB = ref(database, `${user}/${element.id}`)
+        if (element.classList.contains('completed')){
+            update(exactLocationOfItemInDB, {'completed': false})
+        } else {
+            update(exactLocationOfItemInDB, {'completed': true})
+        }
+        element.classList.toggle('completed');
+
     }
 
     function clearListEl(){
