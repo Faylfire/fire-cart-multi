@@ -23,7 +23,7 @@ This application was created in conjunction with a Scrimba (see info below) cour
 
 ### Bug Fixes:
 - 7/11/2024 When in straight down list format: deleting a list item breaks the fixed width of the list item: Fixed, item will retain proper width
-
+- 7/28/2024 Fixed display issue on mobile when changing orientation from landscape to portrait using an updated meta tag with maximum-scale=1, user-scalable=no.
 
 
 Quick start:
