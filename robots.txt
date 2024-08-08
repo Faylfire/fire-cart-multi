@@ -1,2 +1,26 @@
+# Robots.txt taken from https://www.hello-products.com/robots.txt
+
 User-agent: *
-Allow: /
+Disallow: /
+
+# Google adsbot ignores robots.txt unless specifically named!
+
+User-agent: adsbot-google
+Disallow: /
+
+User-agent: Nutch
+Disallow: /
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+Disallow: /
+
+User-agent: AhrefsSiteAudit
+Crawl-delay: 10
+Disallow: /
+
+User-agent: MJ12bot
+Crawl-Delay: 10
+
+User-agent: Pinterest
+Crawl-delay: 1
