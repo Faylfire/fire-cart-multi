@@ -60,7 +60,7 @@ input {
     border: 0;
     padding: 15px;
     border-radius: 8px;
-    font-size: 20px;
+    font-size: 1.25rem;
     text-align: center;
     font-family: 'Rubik', sans-serif;
     margin: 10px 0;
@@ -75,7 +75,7 @@ button {
     border: 0;
     padding: 15px;
     border-radius: 8px;
-    font-size: 20px;
+    font-size: 1.25rem;
     text-align: center;
     font-family: 'Rubik', sans-serif;
     margin-bottom: 20px;
@@ -143,6 +143,11 @@ ul li:hover {
 
 #listLogo {
     cursor: pointer;
+}
+
+#app-title{
+    font-size: 1rem;
+    color: #485fac;
 }
 
 
