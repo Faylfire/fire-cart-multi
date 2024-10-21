@@ -110,7 +110,13 @@ export default function getFirebase(username, password) {
     if (snapshot.exists()) {
       const items = Object.entries(snapshot.val());
       clearListEl();
-      for (let item of items) {
+      //Sorts items with uncompleted items at the beginning
+      const sortedItems = items.sort((a, b) => {
+        const aCompleted = a[1].completed || false;
+        const bCompleted = b[1].completed || false;
+        return aCompleted - bCompleted;
+      });
+      for (let item of sortedItems) {
         appendItemToShoppingListEl(item);
       }
     } else {

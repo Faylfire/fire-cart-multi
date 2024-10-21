@@ -138,6 +138,7 @@ ul li:hover {
 .completed {        
     background-color: #bbf7d0;
     opacity: 0.4;
+    text-decoration: line-through;
 }
   
 
