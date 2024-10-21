@@ -12,6 +12,8 @@ This application was created in conjunction with a Scrimba (see info below) cour
 - Save User Credentials more securely using hashed passwords
 - Check if Username is already taken
 - Add a logout option if the credentials are saved
+- User request: Sort completed items to the bottom leaving only incomplete items at the top, add alphabetizing as well
+- User request: Allow for Editing functionality. This is outside the scope of the application (compromise to copy contents to clipboard at deletion)
 
 
 ### Completed Features:
