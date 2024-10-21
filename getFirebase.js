@@ -140,6 +140,7 @@ export default function getFirebase(username, password) {
     let completed = item[1]["completed"];
 
     let newEl = document.createElement("li");
+    newEl.classList.add("swipeable-item");
     newEl.setAttribute("tabindex", 0);
     if (hasListClass) {
       newEl.classList.add("li-listmode-width");
@@ -151,21 +152,19 @@ export default function getFirebase(username, password) {
     newEl.id = itemID;
 
     //Event Listeners for list items single and double click events-----------
+    /*
     newEl.addEventListener("click", (e) => {
       e.preventDefault();
       toggleCompleted(e.target);
       setTimeout(() => inputFieldEl.focus(), 100);
     });
-
+    
     newEl.addEventListener("dblclick", (e) => {
       e.preventDefault();
       deleteListEl(newEl);
       setTimeout(() => inputFieldEl.focus(), 100);
     });
-
-    newEl.addEventListener("touchend", () => {
-      setTimeout(() => inputFieldEl.focus(), 100);
-    });
+    */
 
     newEl.addEventListener("keydown", function (e) {
       //Enter Key has same handling as single click event, Sets Item as completed
@@ -187,16 +186,128 @@ export default function getFirebase(username, password) {
       }
       inputFieldEl.focus();
     });
+
+    handleSwipe(newEl);
     //--------------------------------------------------------------------------
 
     shoppingListEl.append(newEl);
   }
 
+  function handleSwipe(element) {
+    let startX, startY, currentX, currentY, initialOffset;
+    const horizontalThreshold = 50; // Minimum horizontal distance for a swipe
+    const verticalThreshold = 4000; // Maximum vertical distance allowed for a swipe
+    const clickThreshold = 5; // Maximum horizontal distance allowed for a click more and it's possibly a swipe
+    let isSwiping = false;
+
+    function handleStart(e) {
+      isSwiping = true;
+      console.log("Swiping initiated");
+      startX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+      startY = e.type.includes("mouse") ? e.clientY : e.touches[0].clientY;
+      initialOffset = element.style.transform
+        ? parseInt(
+            element.style.transform
+              .replace("translateX(", "")
+              .replace("px)", "")
+          )
+        : 0;
+      element.style.transition = "none"; // Disable transition for immediate response
+    }
+
+    function handleMove(e) {
+      if (!isSwiping) return;
+
+      currentX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+      currentY = e.type.includes("mouse") ? e.clientY : e.touches[0].clientY;
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+
+      // Check if vertical movement exceeds the threshold
+      if (Math.abs(deltaY) > verticalThreshold) {
+        // Consider this a scroll attempt, cancel the swipe
+        handleCancel();
+        return;
+      }
+
+      const newOffset = initialOffset + deltaX;
+      element.style.transform = `translateX(${newOffset}px)`;
+    }
+
+    function handleEnd() {
+      console.log("Swiping Ended");
+      if (!isSwiping) return;
+      isSwiping = false;
+
+      element.style.transition = "transform 0.3s ease-out"; // Re-enable transition
+
+      const finalOffset = element.style.transform
+        ? parseInt(
+            element.style.transform
+              .replace("translateX(", "")
+              .replace("px)", "")
+          )
+        : 0;
+      const deltaX = finalOffset - initialOffset;
+      const deltaY = currentY - startY;
+      if (Math.abs(deltaX) < clickThreshold) {
+        console.log("This is a click not a swipe");
+        handleClick();
+      } else if (
+        Math.abs(deltaX) > horizontalThreshold &&
+        Math.abs(deltaY) <= verticalThreshold
+      ) {
+        if (deltaX > 0) {
+          console.log("Swiped right on", element);
+          deleteListEl(element);
+          setTimeout(() => inputFieldEl.focus(), 100);
+        } else {
+          console.log("Swiped left on", element);
+          let copyText = element.textContent;
+          copyToClipboard(copyText)
+            .then(() => {
+              console.log("Copy operation completed");
+            })
+            .catch((error) => {
+              console.error("Error in copy operation:", error);
+            });
+        }
+      }
+
+      // Always animate back to original position
+      element.style.transform = "translateX(0)";
+    }
+
+    function handleCancel() {
+      isSwiping = false;
+      element.style.transition = "transform 0.3s ease-out";
+      element.style.transform = "translateX(0)";
+    }
+
+    function handleClick() {
+      toggleCompleted(element);
+      setTimeout(() => inputFieldEl.focus(), 100);
+    }
+
+    // Touch events
+    element.addEventListener("touchstart", handleStart);
+    element.addEventListener("touchmove", handleMove);
+    element.addEventListener("touchend", handleEnd);
+    element.addEventListener("touchcancel", handleCancel);
+
+    // Mouse events
+    element.addEventListener("mousedown", handleStart);
+    element.addEventListener("mousemove", handleMove);
+    element.addEventListener("mouseup", handleEnd);
+    element.addEventListener("mouseleave", handleCancel);
+
+    // Prevent text selection during swipe
+    element.addEventListener("selectstart", (e) => e.preventDefault());
+  }
+
   //List item click handlers
   function deleteListEl(eleToBeDeleted) {
     wobbleIcon();
-    console.log(eleToBeDeleted);
-    console.log("Item Text: ", eleToBeDeleted.textContent);
     let copyText = eleToBeDeleted.textContent;
     copyToClipboard(copyText)
       .then(() => {

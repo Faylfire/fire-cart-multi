@@ -131,6 +131,10 @@ ul li:hover {
     gap: 10px;
 }
 
+.swipeable-item {
+    transition: transform 0.3s ease-out;
+}
+
 .li-listmode-width{
     width: 60%
 }
