@@ -1,10 +1,11 @@
 {
   "name": "project",
   "dependencies": {
+    "copy-to-clipboard": "^3.3.3",
     "firebase": "^10.9.0"
   },
   "devDependencies": {
-    "vite": "latest"
+    "vite": "^5.4.9"
   },
   "scripts": {
     "start": "vite",

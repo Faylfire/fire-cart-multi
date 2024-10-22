@@ -8,6 +8,7 @@ import {
   update,
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 import validateInput from "./tools.js";
+//import copy from "copy-to-clipboard";
 
 //Use the following to calcuate the expiration of the database
 //Stricter rules should be used such as authentication check for fully developed applications
@@ -111,7 +112,8 @@ export default function getFirebase(username, password) {
       const items = Object.entries(snapshot.val());
       clearListEl();
       //Sorts items with uncompleted items at the beginning
-      const sortedItems = items.sort((a, b) => {
+      const revItems = items.reverse();
+      const sortedItems = revItems.sort((a, b) => {
         const aCompleted = a[1].completed || false;
         const bCompleted = b[1].completed || false;
         return aCompleted - bCompleted;
@@ -196,7 +198,7 @@ export default function getFirebase(username, password) {
   function handleSwipe(element) {
     let startX, startY, currentX, currentY, initialOffset;
     const horizontalThreshold = 50; // Minimum horizontal distance for a swipe
-    const verticalThreshold = 4000; // Maximum vertical distance allowed for a swipe
+    const verticalThreshold = 400; // Maximum vertical distance allowed for a swipe
     const clickThreshold = 5; // Maximum horizontal distance allowed for a click more and it's possibly a swipe
     let isSwiping = false;
 
@@ -264,13 +266,8 @@ export default function getFirebase(username, password) {
         } else {
           console.log("Swiped left on", element);
           let copyText = element.textContent;
-          copyToClipboard(copyText)
-            .then(() => {
-              console.log("Copy operation completed");
-            })
-            .catch((error) => {
-              console.error("Error in copy operation:", error);
-            });
+          mFadeIcon();
+          inputFieldEl.value = copyText;
         }
       }
 
@@ -309,13 +306,6 @@ export default function getFirebase(username, password) {
   function deleteListEl(eleToBeDeleted) {
     wobbleIcon();
     let copyText = eleToBeDeleted.textContent;
-    copyToClipboard(copyText)
-      .then(() => {
-        console.log("Copy operation completed");
-      })
-      .catch((error) => {
-        console.error("Error in copy operation:", error);
-      });
 
     const exactLocationOfItemInDB = ref(
       database,
@@ -363,6 +353,15 @@ function spinIcon() {
   }, 500); // Hide after 3000ms or 3 seconds
 }
 
+function mFadeIcon() {
+  const icon = document.getElementById("listLogo");
+  icon.classList.add("moving-fading");
+
+  setTimeout(() => {
+    icon.classList.remove("moving-fading");
+  }, 500); // Hide after 3000ms or 3 seconds
+}
+
 //Show then hide popup after some time 3 second default
 function showPopup(message) {
   const popup = document.getElementById("popup");
@@ -383,4 +382,14 @@ async function copyToClipboard(text) {
   } catch (err) {
     console.error("Failed to copy: ", err);
   }
+
+  /*Usage:
+    copyToClipboard(copyText)
+      .then(() => {
+        console.log("Copy operation completed");
+      })
+      .catch((error) => {
+        console.error("Error in copy operation:", error);
+      });
+    */
 }

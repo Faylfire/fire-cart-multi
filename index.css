@@ -132,6 +132,7 @@ ul li:hover {
 }
 
 .swipeable-item {
+    touch-action: pan-y;
     transition: transform 0.3s ease-out;
 }
 
@@ -194,6 +195,22 @@ ul li:hover {
 
 .spinfast {
     animation: spinAway 0.5s ease-in-out;
+}
+
+/*Add a move and fade for item copy*/
+@keyframes moveAndFade {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+}
+
+.moving-fading {
+    animation: moveAndFade 0.5s ease-out forwards;
 }
 
 /*Pop for input validation*/
