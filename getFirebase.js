@@ -153,7 +153,7 @@ export default function getFirebase(username, password) {
     newEl.textContent = itemValue;
     newEl.id = itemID;
 
-    //Event Listeners for list items single and double click events-----------
+    //Event Listeners for list items single and double click events deprecated for swipe motion-----------
     /*
     newEl.addEventListener("click", (e) => {
       e.preventDefault();
@@ -287,16 +287,16 @@ export default function getFirebase(username, password) {
     }
 
     // Touch events
-    element.addEventListener("touchstart", handleStart);
-    element.addEventListener("touchmove", handleMove);
-    element.addEventListener("touchend", handleEnd);
-    element.addEventListener("touchcancel", handleCancel);
+    element.addEventListener("touchstart", handleStart, { passive: false });
+    element.addEventListener("touchmove", handleMove, { passive: false });
+    element.addEventListener("touchend", handleEnd, { passive: false });
+    element.addEventListener("touchcancel", handleCancel, { passive: false });
 
     // Mouse events
-    element.addEventListener("mousedown", handleStart);
-    element.addEventListener("mousemove", handleMove);
-    element.addEventListener("mouseup", handleEnd);
-    element.addEventListener("mouseleave", handleCancel);
+    element.addEventListener("mousedown", handleStart, { passive: false });
+    element.addEventListener("mousemove", handleMove, { passive: false });
+    element.addEventListener("mouseup", handleEnd, { passive: false });
+    element.addEventListener("mouseleave", handleCancel, { passive: false });
 
     // Prevent text selection during swipe
     element.addEventListener("selectstart", (e) => e.preventDefault());
@@ -319,6 +319,7 @@ export default function getFirebase(username, password) {
     if (element.classList.contains("completed")) {
       update(exactLocationOfItemInDB, { completed: false });
     } else {
+      happyBounceIcon();
       update(exactLocationOfItemInDB, { completed: true });
     }
     element.classList.toggle("completed");
@@ -343,7 +344,7 @@ function wobbleIcon() {
   }, 500); // 1000ms = 1 second
 }
 
-//Add a spin animation to the logo on submit
+//Add a spin animation to the logo used on submit
 function spinIcon() {
   const icon = document.getElementById("listLogo");
   icon.classList.add("spinfast");
@@ -353,6 +354,7 @@ function spinIcon() {
   }, 500); // Hide after 3000ms or 3 seconds
 }
 
+//Add a move fade animation to simulate a copy to the logo used on left swipe
 function mFadeIcon() {
   const icon = document.getElementById("listLogo");
   icon.classList.add("moving-fading");
@@ -360,6 +362,31 @@ function mFadeIcon() {
   setTimeout(() => {
     icon.classList.remove("moving-fading");
   }, 500); // Hide after 3000ms or 3 seconds
+}
+
+//Add a happyBounceIcon to the logo on used when all items are complete
+function happyBounceIcon() {
+  const icon = document.getElementById("listLogo");
+
+  // Remove any existing animation
+  icon.classList.remove("bounce");
+
+  // Force a reflow to ensure the animation restarts
+  void icon.offsetWidth;
+
+  // Add the animation class
+  icon.classList.add("bounce");
+
+  // Clear any existing timeout
+  if (icon.bounceTimeout) {
+    clearTimeout(icon.bounceTimeout);
+  }
+
+  // Set new timeout and store the reference
+  icon.bounceTimeout = setTimeout(() => {
+    icon.classList.remove("bounce");
+    icon.bounceTimeout = null;
+  }, 1200);
 }
 
 //Show then hide popup after some time 3 second default
