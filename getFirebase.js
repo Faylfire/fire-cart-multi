@@ -8,9 +8,13 @@ import {
   update,
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 import validateInput from "./tools.js";
+import ConfettiManager from "./ConfettiManager.js";
+
+//Initialize canvas for confetti
+const confettiManager = new ConfettiManager();
 //import copy from "copy-to-clipboard";
 
-//Use the following to calcuate the expiration of the database
+//Use the following to calculate the expiration of the database
 //Stricter rules should be used such as authentication check for fully developed applications
 //const new_date = new Date("2024-12-24");
 //let expiration = new_date.getTime() //1724457600000
@@ -111,6 +115,11 @@ export default function getFirebase(username, password) {
     if (snapshot.exists()) {
       const items = Object.entries(snapshot.val());
       clearListEl();
+
+      const allCompleted = items.every((item) => item[1].completed);
+      if (allCompleted) {
+        allCompletedConfetti();
+      }
       //Sorts items with uncompleted items at the beginning
       const revItems = items.reverse();
       const sortedItems = revItems.sort((a, b) => {
@@ -186,7 +195,7 @@ export default function getFirebase(username, password) {
         e.preventDefault();
         deleteListEl(newEl);
       }
-      inputFieldEl.focus();
+      //inputFieldEl.focus();
     });
 
     handleSwipe(newEl);
@@ -262,7 +271,7 @@ export default function getFirebase(username, password) {
         if (deltaX > 0) {
           console.log("Swiped right on", element);
           deleteListEl(element);
-          setTimeout(() => inputFieldEl.focus(), 100);
+          //setTimeout(() => inputFieldEl.focus(), 100);
         } else {
           console.log("Swiped left on", element);
           let copyText = element.textContent;
@@ -283,7 +292,7 @@ export default function getFirebase(username, password) {
 
     function handleClick() {
       toggleCompleted(element);
-      setTimeout(() => inputFieldEl.focus(), 100);
+      //setTimeout(() => inputFieldEl.focus(), 100);
     }
 
     // Touch events
@@ -305,7 +314,7 @@ export default function getFirebase(username, password) {
   //List item click handlers
   function deleteListEl(eleToBeDeleted) {
     wobbleIcon();
-    let copyText = eleToBeDeleted.textContent;
+    //let copyText = eleToBeDeleted.textContent;
 
     const exactLocationOfItemInDB = ref(
       database,
@@ -387,6 +396,11 @@ function happyBounceIcon() {
     icon.classList.remove("bounce");
     icon.bounceTimeout = null;
   }, 1200);
+}
+
+//Confetti
+function allCompletedConfetti() {
+  confettiManager.trigger();
 }
 
 //Show then hide popup after some time 3 second default
